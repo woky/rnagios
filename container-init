@@ -1,0 +1,19 @@
+#!/bin/sh
+
+do_stop()
+{
+	service nagios  stop
+	service apache2 stop
+	exit 0
+}
+
+service apache2 restart
+service nagios  restart
+
+trap do_stop INT TERM
+
+tail -F \
+	/var/log/apache2/error.log \
+	/usr/local/nagios/var/nagios.log &
+
+wait $!

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+: ${CONF_DIR:=$PWD/conf}
+: ${DATA_DIR:=$PWD/data}
+
+docker run --name=rnagios --rm=true --cap-add=ALL \
+    -p 127.0.0.1:8880:80 \
+    -v $CONF_DIR/nagios:/usr/local/nagios/etc \
+    -v $DATA_DIR/nagios:/usr/local/nagios/var \
+    -v $CONF_DIR/msmtp:/home/nagios/.config/msmtp \
+    -v $DATA_DIR/msmtp:/home/nagios/msmtp \
+    rchainops/rnagios "$@"
